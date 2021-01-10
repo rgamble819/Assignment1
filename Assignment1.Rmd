@@ -1,0 +1,480 @@
+---
+title: "<h1 align=\"center\">MATH 4743 Assignment 1</h1>"
+author: "Ryan Gamble"
+date: "1/5/2021"
+output: 
+  html_document:
+    fig_caption: yes
+    fig_height: 4
+    fig_width: 5
+    number_sections: no
+    toc: yes
+    toc_float: false
+  pdf_document: default
+---
+
+```{r setup, include=FALSE, echo = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Question 1
+<p>
+1. Four assignments worth 15% of total grade.
+2. Laboratories worth a total of 10%.<br>
+  &nbsp;a. Possibly 16 Lab/minilab reports.<br>
+  &nbsp;b. Additional class room exercises.<br>
+  &nbsp;c. Grades allotted through drop-boxes and Rubrics.<br>
+3. Two projects worth a total of 10%.<br>
+  &nbsp;a. Project 1 is worth 1/3 of this 10%.<br>
+  &nbsp;b. Project 2 is worth 2/3 of this 10%.<br>
+4. In-class quizzes worth 10% of total.
+5. Chapter canvas quizzes online worth 5% of total.
+6. Mid-term exams worth a total of 20%.
+7. Final worth a total of 30%.
+8. Grades: A (90s) B(80s) C(60s and 70s) D(50s) F(<50) – NO curving!!</p>
+
+## Question 2
+<p>
+(a)
+</p>
+```{r coplot, echo=TRUE}
+ddt = read.csv("*.csv")
+head(ddt)
+
+#Creating color vector for points by MILE.
+mile_data=with(ddt, as.numeric(factor(MILE))) # A
+length(unique(mile_data)) #B
+coplot(LENGTH~WEIGHT|(RIVER * SPECIES),data=ddt,rows=1,overlap=0,xlab=c("LENGTH","RIVER"), ylab=c("WEIGHT","SPECIES"),col=mile_data, pch=19)
+```
+
+<p>
+(b) The lower left three conditional plots show individual CCATFISH data points in the rivers, FRM, LCM, and SCM. They show the length and weight of each species, and because the color is the same within the individual coplot, the fish were from the same MILE.<br><br>
+(c) Line A (37) <br>
+With constructs copy of the dataframe with the constraints of the expression given as a parameter.<br>
+The first parameter "ddt" is the original dataframe constructed from the CSV file. mile_data is the variable assigned to this point in memory.The second parameter as.numeric(factor(MILE)). factor(MILE) creates a vector from the "MILE" category from the dataframe. as.numeric() forces this vector to type "numeric" from original type. This allows us to map color to the different "MILE" values using the vector created.<br><br>
+(d) Line B (38) <br>
+unique(mile_data) creates a dataframe with all the unique values within this data. The length() outputs the size or how many unique values for mile is found within this data.
+<br><br>
+(e) The top six plots are empty due to none of the given species having data points in the given river, that is, this fish was not recorded in the river!<br><br>
+(f)
+</p>
+
+```{r meanDDT, echo=TRUE}
+ddt = read.csv("*.csv")
+FCM_CCATFISH_DDT = subset(ddt,RIVER=="FCM" & SPECIES=="CCATFISH",)
+mean_DDT = apply(FCM_CCATFISH_DDT["DDT"], 2, mean, na.rm = TRUE)
+cat("The mean value of DDT for CCATFISH in FCM is:", mean_DDT)
+```
+## Question 3 - MS 1.14
+<p>
+Classify each of the variables as quantitative or qualitative.<br>
+(a) Length of maximum span <br>
+Quantitative<br>
+(b) Number of vehicle lanes <br>
+Quantitative<br>
+(c) Toll bridge (yes or no) <br>
+Qualitative<br>
+(d) Average daily traffic <br>
+Qualitative<br>
+(e) Condition of deck (good, fair, poor)<br>
+Qualitative<br>
+(f) Bypass or detour length (miles)<br>
+Quantitative<br>
+(g) Route type (interstate, U.S., state, county, or city)<br>
+Qualitative<br>
+</p>
+
+## Question 4
+<p>
+(a) The four random sampling designs are <i>simple random sampling</i> (Simple), <i>stratified random sampling</i>, <i>cluster sampling</i>, and <i>systemic sampling</i> (Last three complex).<br><br>
+(b) Description of sampling techniques.<br>
+<i>Simple random sampling - </i>This method of sampling focuses on ensuring that every subset of a population has the same change of being included in a sample. Ex - Assign population numbers from random number generator with random seed. Use random number to select sample.<br><br>
+<i>Stratified sampling - </i>This method of sampling is useful when data can be categorized based on similar characteristics. An example of this can include average cost of living by state - where cost of living can greatly differ by the categorical data of which state the resident resides in. <br><br>
+<i>Cluster sampling - </i>This method of sampling is used when other methods are not practical by the scale of a population. This method groups a large population into clusters then randomly selects these clusters. Geographical area is often how clusters are grouped, however, selection bias must be considered when examining these clusters and how it will affect the data being collected.<br><br>
+<i>Systemic sampling - </i>This sampling technique is performed by selecting every nth unit. For example, on an assembly line, every 100th product will be selected for examination.<br>
+</p>
+
+## Question 5
+<p>5 Random samples selected: <br></p>
+```{r MTBE, echo=TRUE}
+# Reading in data and removing invalid data.
+mtbe=read.csv("MTBE.csv", header=TRUE)
+ind=sample(1:NROW(mtbe),5,replace=FALSE)
+
+#Display random samples selected.
+mtbe[ind,]
+```
+<p>(a)<br></p>
+<p>(i) Removing all rows that contain NAs.</p>
+```{r MTBEai, echo=TRUE}
+mtbe=read.csv("MTBE.csv", header=TRUE)
+mtbeo=na.omit(mtbe)
+
+# Filtering data to include desired values.
+bedrock_data=with(mtbeo,mtbeo[Aquifier=="Bedrock",])
+bedrock_data
+```
+<p>(ii) Calculating standrd deviation of bedrock aquifier with NAs removed.<br></p>
+```{r MTBEaii, echo=TRUE}
+mtbe=read.csv("MTBE.csv", header=TRUE)
+mtbeo=na.omit(mtbe)
+
+# Filtering data to include desired values.
+bedrock_data=with(mtbeo,mtbeo[Aquifier=="Bedrock",])
+
+#Calculated standard deviation.
+sd_bedrockwell = apply(bedrock_data["Depth"], 2, sd, na.rm = TRUE)
+cat("Standard deviation of well depth is: ", sd_bedrockwell)
+```
+## Question 6 - MS 1.16
+<p>Random sample where n = 30.<br></p>
+```{r Earthquakes, echo=TRUE}
+# Read data and take samples.
+eq=read.csv("EARTHQUAKE.csv", header=TRUE)
+quake_samples=sample(1:NROW(quakes),30,replace=FALSE)
+
+#Display random samples selected.
+eq[quake_samples,]
+```
+
+<p>(a)<br></p>
+<p>(i) Earthquake magnitude plot.</p>
+
+```{r magnitudePlot, echo=TRUE}
+#Plot magnitude of aftershocks on timeseries.
+plot(ts(eq["MAGNITUDE"]), main="Jan 17th, 19994: Aftershocks following quake",xlab="Index")
+```
+
+<p>(ii) Median of earthquake magnitude.</p>
+```{r medianMagnitude, echo=TRUE}
+#Find median on earthquake magnitude.
+mag_mean=apply(eq["MAGNITUDE"], 2, median, na.rm = TRUE)
+cat("The median earthquake magnitude is:", mag_mean)
+```
+
+## Question 7
+<p>(a) What is the data collection method?<br>
+The data collections method is a designed experiment where the samples were acquired through stratified sampling. The different strata or categories are the locations or river/tributary where the fish were captured.<br>
+</p><p>(b) What is the population?<br>
+The population is all the three species of fish in the river.<br>
+
+</p><p>(c) Give the names of all the qualitative variables.<br>
+<i>Qualitative variables - </i> River and Species.<br>
+</p>
+
+## Question 8 - 2.1
+
+```{r parentoModel, echo=TRUE}
+library("MATH4753ouGamb0004")
+
+freq=c(15,8,63,20)
+RL=c("None","Both","LegsO","WheelsO")
+l=rep(RL,freq)
+pareto(l, "Robotic Limbs Pareto")
+```
+
+## Question 9 - 2.4
+
+```{r pie_microsoft, echo=TRUE}
+library("MATH4753ouGamb0004")
+programs=c("Windows","Office","Explorer")
+bulletins=c(32,12,6)
+pie(bulletins, programs, main="Distribution of Security Issues among Programs")
+
+repercussions=c(6,8,22,3,11)
+issues=c("Denial of Service","Information Disclosure","Remote Code Execution","Spoofing","Privilege Elevation")
+l=rep(issues,repercussions)
+pareto(l, "Expected repercussions from security issues")
+```
+
+## Question 10 - 2.10
+
+```{r pie_swdefects, echo=TRUE}
+library(plotrix)
+swd=read.csv("SWDEFECTS.csv", header=TRUE)
+tab=table(swd["defect"])
+rtab=tab/sum(tab)
+rtab_rounded = round(rtab,2)
+
+pie3D(rtab_rounded,labels=list("OK","Defective"), main="SW Defects Pie")
+```
+
+## Question 11 - 2.72
+<p>(a) Construct a relative frequency histogram for old location.<br></p>
+```{r voltage_relative_freq_old, echo=TRUE}
+voltage_data = read.csv("VOLTAGE.csv", header=TRUE)
+old_voltage=with(voltage_data, voltage_data[LOCATION=="OLD",])
+voltage=old_voltage$VOLTAGE
+oldhist = hist(voltage, plot=FALSE) 
+oldhist$density = oldhist$counts/sum(oldhist$counts)
+col2 = rgb(0,0,255,max=255,alpha=125, names="blue")
+plot(oldhist, col=col2, freq=FALSE, xlab="Voltage",ylab="Relative Frequency", main="Old Voltage Histogram")
+```
+
+<p>(b) Construct a stem and leaf display.<br></p>
+```{r voltage_stem_leaf, echo=TRUE}
+stem(old_voltage[["VOLTAGE"]])
+```
+<p>The stem and leaf plot is more informative because the decimal places are visible for examination.<br></p>
+
+<p>(c) Construct a relative frequency histogram for new location.</p>
+```{r voltage_relative_freq_new, echo=TRUE}
+new_voltage=with(voltage_data, voltage_data[LOCATION=="NEW",])
+
+voltage2 = new_voltage$VOLTAGE
+newhist = hist(voltage2, plot=FALSE, breaks=5) 
+newhist$density = newhist$counts/sum(newhist$counts)
+
+col1 = rgb(255,0,0,max=255,alpha=125, names="red")
+
+plot(newhist,freq=FALSE, xlab="Voltage", ylab="Relative Frequency", main="New Voltage Histogram", col=col1)
+```
+<p>(d) Compare diagrams in part A and C. Which process is better? New or old?</p>
+```{r voltage_comparison, echo=TRUE}
+#Do NOT use hist()
+plot(oldhist, col=col2, freq=FALSE, xlab="Voltage",ylab="Relative Frequency", main="Voltage (Old vs New)")
+plot(newhist, col=col1,add=TRUE, freq=FALSE)
+legend("topright", c("Old","New"),fill=c(col2,col1))
+```
+
+<p>The new location has a higher portion of the relative frequency occurring in the range lower than 9.2 V. This means a higher portion of the process is considered "bad".<br><br></p>
+<p>(e) Find and interpret the mean, median, and mode for each of the voltage readings data sets. Which is the preferred measure of central tendency? Explain.<br><br></p>
+
+<p><b>Old Voltage</b></p>
+```{r central_old_voltage, echo=TRUE}
+old_voltage_vector <- old_voltage[["VOLTAGE"]]
+cat("Mean: ", mean(old_voltage_vector))
+cat("Median: ", median(old_voltage_vector))
+cat("Mode: ", mathMode(old_voltage_vector))
+```
+<p><b>New Voltage</b></p>
+```{r central_new_voltage, echo=TRUE}
+new_voltage_vector <- new_voltage[["VOLTAGE"]]
+cat("Mean: ", mean(new_voltage_vector))
+cat("Median: ", median(new_voltage_vector))
+cat("Mode: ", mathMode(new_voltage_vector))
+```
+<p>Which is best?</p>
+<p>A few lower outliers occur in the old voltage data that can skew the results. The median is likely the most accurate representation of central tendency.</p>
+
+<p>(f) Calculate the z-score for a voltage reading of 10.50 at the old location.<br></p>
+```{r zscore_old, echo=TRUE}
+#Variables to find z-score
+mean = mean(old_voltage_vector)
+val=10.50
+sd=sd(old_voltage_vector)
+# Z-Score from custom package function.
+z=zscore_func(mean,val,sd)
+#Print data
+cat("z-score for the value of 10.50 in old voltage data is:", z)
+```
+<p>(g) Calculate the z-score for a voltage reading of 10.50 at the new location.<br></p>
+```{r zscore_new, echo=TRUE}
+#Variables to find z-score
+mean = mean(new_voltage_vector)
+val=10.50
+sd=sd(new_voltage_vector)
+# Z-Score from custom package function.
+z=zscore_func(mean,val,sd)
+#Print data
+cat("z-score for the value of 10.50 in old voltage data is:", z)
+```
+<p>(h) Based on the results of <b>f</b> and <b>g</b>, at which location is a voltage reading of 10.50 more likely to occur? Explain.<br></p>
+
+<p>A voltage reading is more likely to occur at the old location because the magnitude of the zscore is less the same value at the new location. Based on the empirical rules, 1.28 standard deviations from the mean is more likely to occur than 2.25 standard deviations.<br><br></p>
+
+<p>(i) Construct a box plot for the data at the old location. Do you detect any outliers?<br></p>
+
+```{r voltage_boxplot, echo=TRUE}
+boxplot(old_voltage_vector, xlab="Measurements Taken", ylab="Voltage", main="Boxplot of Voltage at Old Location", col="lightblue")
+```
+
+<p>4 Outliers are detected and illustrated by the 4 circle points.<br><br></p>
+
+<p>(j) Use the method of z-scores to detect outliers at the old location<br></p>
+
+```{r voltage_old_zscore_outlier, echo=TRUE}
+# Basic stats to calculate zscore
+mean = mean(old_voltage_vector)
+sd=sd(old_voltage_vector)
+
+# Store
+zscore_index = c()
+for(i in 1:NROW(old_voltage_vector))
+{
+  score = zscore_func(mean, old_voltage_vector[i], sd)
+  if(abs(score)>=3)
+  {
+    zscore_index<- append(zscore_index, i)  
+  }
+}
+cat("The number of outliers in the old location determined by z-score is:", NROW(zscore_index))
+
+if(NROW(zscore_index) >0)
+{
+  cat("List of outlier values:")
+  for(j in 1:NROW(zscore_index))
+  {
+    print(old_voltage_vector[zscore_index[j]])
+  }
+}
+```
+
+<p>(k) Construct a boxplot for the data at the new location.<br></p>
+
+```{r voltage_boxplot_new, echo=TRUE}
+boxplot(new_voltage_vector, xlab="Measurements Taken", ylab="Voltage", main="Boxplot of Voltage at New Location",col="red")
+```
+<p>No outliers in the new location box plot.<br><br></p>
+
+<p>(l) Use the methods of z-scores to detect outliers at the new location.</p>
+
+```{r voltage_new_zscore_outlier, echo=TRUE}
+# Basic stats to calculate zscore
+mean = mean(new_voltage_vector)
+sd=sd(new_voltage_vector)
+
+# Store
+zscore_index = c()
+for(i in 1:NROW(new_voltage_vector))
+{
+  score = zscore_func(mean, new_voltage_vector[i], sd)
+  if(abs(score)>=3)
+  {
+    zscore_index<- append(zscore_index, i)  
+  }
+}
+
+cat("The number of outliers in the old location determined by z-score is:", NROW(zscore_index))
+
+if(NROW(zscore_index) >0)
+{
+cat("List of outlier values:")
+  for(j in 1:NROW(zscore_index))
+  {
+    print(new_voltage_vector[zscore_index[j]])
+  }
+}
+```
+
+<p>(m) Compare the distributions of voltage readings at the two locations by placing the box plots in parts <b>l</b> and <b>k</b>, side-by-side, vertically.</p>
+
+```{r voltage_boxplot_siddebyside, echo=TRUE}
+boxplot(old_voltage_vector,new_voltage_vector,names = c("Old","New"),col=c("blue","red"),ylim=c(8,11), main="Old vs New Location Voltage Boxplot")
+```
+
+## Question 12 - 2.73
+```{r CI_PIPEROUGHNESS, echo=TRUE}
+rough_pipe=read.csv("ROUGHPIPE.csv")
+rough_vect=rough_pipe[["ROUGH"]]
+sd_pipe=sd(rough_vect)
+upperz=qnorm(0.975)
+lowerz=qnorm(0.25)
+margin=upperz*(sd/sqrt(nrow(rough_pipe)))
+upperb=mean(rough_vect)+margin
+lowerb=mean(rough_vect)-margin
+cat("The interval that contains 95% of the values is:", lowerb, "-", upperb)
+```
+## Question 13 - 2.80
+<p>(a) Find the mean, median, and mode. Interpret.</p>
+```{r GOBI_SPECIES_STATS, echo=TRUE}
+gobi_data=read.csv("GOBIANTS.csv")
+species_vector=gobi_data[["AntSpecies"]]
+mean_species=mean(species_vector)
+median_species=median(species_vector)
+mode_species=mathMode(species_vector)
+print("For ant species...")
+cat("Mean:", mean_species)
+cat("Median:", median_species)
+cat("Mode:", mode_species)
+```
+<p>The mean value is extremely skewed due to large outliers within the dataset. The median, or middle value, is by far the most accurate measurement of central tendency due to its reasonable value and not influence of outliers or duplicates. The mode is the most commonly occuring value. In this case, it is the same as the median.<br> </p>
+<p>(b) Which measurement of central tendency  would you recommned to describe the center number of any species distribution.<br<br></p>
+
+<p>The median is the best measurement of central tendency due to the large outliers skewing the mean.<br></p>
+
+<p>(c) Find the mean, median, and mode for the total plant cover percentage at the 5 dry steppe sites only.<br></p>
+
+```{r GOBI_STEPPE_STATS, echo=TRUE}
+#Fixing the data
+gobi_data=read.csv("GOBIANTS.csv")
+gobi_fixed_data=within(gobi_data,
+                    {Region <- ifelse(Region == "Gobi Desert","GD","DS")
+                      Region<-factor(Region)
+                     })
+
+#Filtering for desert steppe region
+gobi_steppe_data=with(gobi_fixed_data, gobi_fixed_data[Region=="DS",])
+#Filtering for plant coverage
+coverage_vector=gobi_steppe_data[["PlantCov"]]
+#Calculating stats
+mean_coverage=mean(coverage_vector)
+median_coverage=median(coverage_vector)
+mode_coverage=mathMode(coverage_vector)
+#Print data
+print("For the 5 dry steppe records, the plant coverage statistics:")
+cat("Mean:", mean_coverage)
+cat("Median:", median_coverage)
+cat("Mode:", mode_coverage)
+```
+
+<p>(d) Find the mean, median, and mode for the total plant cover percentage at the 5 dry steppe sites only.<br></p>
+
+```{r GOBI_DESERT_STATS, echo=TRUE}
+#Filtering for gobi desert regions
+gobi_desert_data=with(gobi_fixed_data, gobi_fixed_data[Region=="GD",])
+#Filtering for plant coverage data
+coverage_vector2=gobi_desert_data[["PlantCov"]]
+#Calculating stats
+mean_coverage2=mean(coverage_vector2)
+median_coverage2=median(coverage_vector2)
+mode_coverage2=mathMode(coverage_vector2)
+#Print data
+print("For 6 gobi desert records, the plant coverage statistics...")
+cat("Mean:", mean_coverage2)
+cat("Median:", median_coverage2)
+cat("Mode:", mode_coverage2)
+```
+
+<p>(c) Based on the results from <b>c</b> and <b>d</b>, do the center of the total plant coverage distribution appear to be different in the two regions?.<br></p>
+
+<p>Based on the results from the previous questions, there is in fact a difference in the center of the plant coverage distribution. The average of 40.4 percent in the dry steppes and 28 percent in the gobi desert.<br></p>
+
+## Question 14 - 2.84
+<p>(a) Use a graphical method to describe the velocity distribution of galaxy cluster A1775.</p>
+```{r GALAXY_GRAPH, echo=TRUE}
+light_vel_data=read.csv("GALAXY2.csv")
+hist(light_vel_data[["VELOCITY"]], breaks=10, main="Velocity of Light",ylim=c(0,15), xlab="Velocity (km/s) Bin")
+```
+<p>(b) Examine the graph above, is there evidence to support the double cluster theory?<br><br></p>
+<p>There is significant evidence to support the double cluster theory. There is a bi-modal distribution with two distinct peaks.</p>
+
+<p>(c) Calculate numerical descriptive measures for each cluster.</p>
+```{r GALAXY_NUMERICAL, echo=TRUE}
+light_vel_data=read.csv("GALAXY2.csv")
+A1775A_data=with(light_vel_data,light_vel_data[VELOCITY>21000,])
+mean_A1775A=mean(A1775A_data)
+sd_A1775A=sd(A1775A_data)
+print("Descriptive Measurements for A1775A")
+cat("Mean:", mean_A1775A)
+cat("Standard Deviation:", sd_A1775A)
+A1775B_data=with(light_vel_data,light_vel_data[VELOCITY>21000,])
+mean_A1775B=mean(A1775B_data)
+sd_A1775B=sd(A1775B_data)
+print("Descriptive Measurements for A1775B")
+cat("Mean:", mean_A1775B)
+cat("Standard Deviation:", sd_A1775B)
+```
+
+<p>(d) Which cluster does a measurement of 20,000 km/s belog to? Explain.</p>
+```{r GALAXY_NUMERICAL_DIST, echo=TRUE}
+light_vel_data=read.csv("GALAXY2.csv")
+A1775B_data=with(light_vel_data,light_vel_data[VELOCITY>21000,])
+mean_A1775B=mean(A1775B_data)
+sd_A1775B=sd(A1775B_data)
+
+cat("The probability that a velocity of 20,000 km/s comes from cluster B is",pnorm(20000, mean_A1775B, sd_A1775B,lower.tail=T)*100, "percent.")
+```
+<p>20,000 km/s is within 1 standard deviation of cluster A's mean, therefore, it is highly likely this data point came from it.</p>
+
+
