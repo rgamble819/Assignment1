@@ -35,59 +35,62 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Question 2
 <p>
-(a)
+(a) Make the coplots with the given constraints.
 </p>
 ```{r coplot, echo=TRUE}
+# Read in CSV and display table.
 ddt = read.csv("*.csv")
 head(ddt)
 
-#Creating color vector for points by MILE.
+# Creating color vector for points by MILE.
 mile_data=with(ddt, as.numeric(factor(MILE))) # A
-length(unique(mile_data)) #B
+
+# Create coplot
 coplot(LENGTH~WEIGHT|(RIVER * SPECIES),data=ddt,rows=1,overlap=0,xlab=c("LENGTH","RIVER"), ylab=c("WEIGHT","SPECIES"),col=mile_data, pch=19)
 ```
 
 <p>
-(b) The lower left three conditional plots show individual CCATFISH data points in the rivers, FRM, LCM, and SCM. They show the length and weight of each species, and because the color is the same within the individual coplot, the fish were from the same MILE.<br><br>
+(b) Interpret the lower left three conditional plots. <br>The lower left three conditional plots show individual CCATFISH data points in the rivers, FRM, LCM, and SCM. They show the length and weight of each species, and because the color is the same within the individual coplot, the fish were from the same MILE.<br><br>
 (c) Line A (37) <br>
 With constructs copy of the dataframe with the constraints of the expression given as a parameter.<br>
 The first parameter "ddt" is the original dataframe constructed from the CSV file. mile_data is the variable assigned to this point in memory.The second parameter as.numeric(factor(MILE)). factor(MILE) creates a vector from the "MILE" category from the dataframe. as.numeric() forces this vector to type "numeric" from original type. This allows us to map color to the different "MILE" values using the vector created.<br><br>
 (d) Line B (38) <br>
 unique(mile_data) creates a dataframe with all the unique values within this data. The length() outputs the size or how many unique values for mile is found within this data.
 <br><br>
-(e) The top six plots are empty due to none of the given species having data points in the given river, that is, this fish was not recorded in the river!<br><br>
-(f)
+(e) Why are the top six plots empty?<br> The top six plots are empty due to none of the given species having data points in the given river, that is, this fish was not recorded in the river!<br><br>
+(f) What is the mean value of DDT found in the sample of CCATFISH caught in the FCM river?
 </p>
 
 ```{r meanDDT, echo=TRUE}
-ddt = read.csv("*.csv")
+# Create subset and find mean
 FCM_CCATFISH_DDT = subset(ddt,RIVER=="FCM" & SPECIES=="CCATFISH",)
 mean_DDT = apply(FCM_CCATFISH_DDT["DDT"], 2, mean, na.rm = TRUE)
 cat("The mean value of DDT for CCATFISH in FCM is:", mean_DDT)
 ```
+
 ## Question 3 - MS 1.14
 <p>
 Classify each of the variables as quantitative or qualitative.<br>
 (a) Length of maximum span <br>
-Quantitative<br>
+Quantitative<br><br>
 (b) Number of vehicle lanes <br>
-Quantitative<br>
+Quantitative<br><br>
 (c) Toll bridge (yes or no) <br>
-Qualitative<br>
+Qualitative<br><br>
 (d) Average daily traffic <br>
-Qualitative<br>
+Qualitative<br><br>
 (e) Condition of deck (good, fair, poor)<br>
-Qualitative<br>
+Qualitative<br><br>
 (f) Bypass or detour length (miles)<br>
-Quantitative<br>
+Quantitative<br><br>
 (g) Route type (interstate, U.S., state, county, or city)<br>
-Qualitative<br>
+Qualitative<br><br>
 </p>
 
 ## Question 4
 <p>
-(a) The four random sampling designs are <i>simple random sampling</i> (Simple), <i>stratified random sampling</i>, <i>cluster sampling</i>, and <i>systemic sampling</i> (Last three complex).<br><br>
-(b) Description of sampling techniques.<br>
+(a) What are the names of the four random sampling designs (1 simple and 3 more complex). <br>The four random sampling designs are <i>simple random sampling</i> (Simple), <i>stratified random sampling</i>, <i>cluster sampling</i>, and <i>systemic sampling</i> (Last three complex).<br><br>
+(b) Give a brief description of each.<br>Description of sampling techniques.<br>
 <i>Simple random sampling - </i>This method of sampling focuses on ensuring that every subset of a population has the same change of being included in a sample. Ex - Assign population numbers from random number generator with random seed. Use random number to select sample.<br><br>
 <i>Stratified sampling - </i>This method of sampling is useful when data can be categorized based on similar characteristics. An example of this can include average cost of living by state - where cost of living can greatly differ by the categorical data of which state the resident resides in. <br><br>
 <i>Cluster sampling - </i>This method of sampling is used when other methods are not practical by the scale of a population. This method groups a large population into clusters then randomly selects these clusters. Geographical area is often how clusters are grouped, however, selection bias must be considered when examining these clusters and how it will affect the data being collected.<br><br>
@@ -110,15 +113,11 @@ mtbe[ind,]
 mtbe=read.csv("MTBE.csv", header=TRUE)
 mtbeo=na.omit(mtbe)
 
-# Filtering data to include desired values.
+# Filtering and displaying data to include desired values.
 bedrock_data=with(mtbeo,mtbeo[Aquifier=="Bedrock",])
-bedrock_data
 ```
 <p>(ii) Calculating standrd deviation of bedrock aquifier with NAs removed.<br></p>
 ```{r MTBEaii, echo=TRUE}
-mtbe=read.csv("MTBE.csv", header=TRUE)
-mtbeo=na.omit(mtbe)
-
 # Filtering data to include desired values.
 bedrock_data=with(mtbeo,mtbeo[Aquifier=="Bedrock",])
 
@@ -168,7 +167,7 @@ The population is all the three species of fish in the river.<br>
 library("MATH4753ouGamb0004")
 
 freq=c(15,8,63,20)
-RL=c("None","Both","LegsO","WheelsO")
+RL=c("None","Both","Legs Only","Wheels Only")
 l=rep(RL,freq)
 pareto(l, "Robotic Limbs Pareto")
 ```
@@ -184,7 +183,7 @@ pie(bulletins, programs, main="Distribution of Security Issues among Programs")
 repercussions=c(6,8,22,3,11)
 issues=c("Denial of Service","Information Disclosure","Remote Code Execution","Spoofing","Privilege Elevation")
 l=rep(issues,repercussions)
-pareto(l, "Expected repercussions from security issues")
+pareto(l, "Expected Repercussions from Security Issues")
 ```
 
 ## Question 10 - 2.10
@@ -468,13 +467,17 @@ cat("Standard Deviation:", sd_A1775B)
 
 <p>(d) Which cluster does a measurement of 20,000 km/s belog to? Explain.</p>
 ```{r GALAXY_NUMERICAL_DIST, echo=TRUE}
-light_vel_data=read.csv("GALAXY2.csv")
-A1775B_data=with(light_vel_data,light_vel_data[VELOCITY>21000,])
-mean_A1775B=mean(A1775B_data)
-sd_A1775B=sd(A1775B_data)
-
+# Use pnorm to find the probability that the data point is a part of of cluster B
 cat("The probability that a velocity of 20,000 km/s comes from cluster B is",pnorm(20000, mean_A1775B, sd_A1775B,lower.tail=T)*100, "percent.")
 ```
-<p>20,000 km/s is within 1 standard deviation of cluster A's mean, therefore, it is highly likely this data point came from it.</p>
+<p>20,000 km/s is within 1 standard deviation of cluster A's mean, therefore, it is <u>highly</u> likely this data point came from A.</p>
 
+## Question 15
+<p>Create plot with ggplot.</p>
 
+```{r ddt_Chart, echo=TRUE}
+## Access GGPLOT2 Library
+library(ggplot2)
+## Create plot
+ggplot(ddt, aes(x=RIVER, y=LENGTH, fill=SPECIES)) + geom_boxplot() + ggtitle("Ryan Gamble") + labs(caption="Figure 1: GGPLOT used to make this image")
+```
